@@ -29,11 +29,13 @@ title: Maxwell Holder
 <section>
   <h1>Blog posts</h1>
   <ul>
-    <li>
-      <a href="/blog/20140929_contribute-to-open-source-using-copy-paste.html">
-        Contributing to Open Source with Copy and Paste
-      </a>
-    </li>
+    <% blog.articles.each do |article| %>
+      <li>
+        <a href="<%= article.url %>">
+          <%= article.title %>
+        </a>
+      </li>
+    <% end %>
   </ul>
 </section>
 <section>
