@@ -78,3 +78,9 @@ end
 
 activate :syntax
 set :markdown_engine, :kramdown
+
+require 'vocal_tract_length'
+map '/vocal_tract_length' do
+  run VocalTractLength::App
+end
+

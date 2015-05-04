@@ -6,6 +6,8 @@ gem "middleman", "~>3.3.12"
 gem "middleman-blog"
 gem "middleman-syntax"
 
+gem 'vocal_tract_length'
+
 # Live-reloading plugin
 gem "middleman-livereload", "~> 3.1.0"
 
