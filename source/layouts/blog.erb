@@ -1,0 +1,11 @@
+<% wrap_layout :layout do %>
+  <nav>
+    <a href="/">Home</a>
+  </nav>
+  <article>
+    <header>
+      <%= current_page.data.title %>
+    </header>
+    <%= yield %>
+  </article>
+<% end %>

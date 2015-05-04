@@ -73,6 +73,7 @@ end
 
 activate :blog do |blog|
   blog.prefix = 'blog'
+  blog.layout = 'blog'
 end
 
 activate :syntax
