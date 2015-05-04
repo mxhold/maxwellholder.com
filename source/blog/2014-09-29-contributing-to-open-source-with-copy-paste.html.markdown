@@ -14,8 +14,6 @@ profile can be more important than your résumé when it comes to landing a job.
 
 But it can be hard to know where to start.
 
-<!-- more -->
-
 ### Gardening
 
 There is a lot of advice out there on how to approach contributing to OSS.
@@ -54,16 +52,16 @@ Instead you can just use Ruby.
 
 Something like:
 
-```SQL
+~~~sql
 SELECT snacks.* FROM snacks
 INNER JOIN maxs_favorite_snacks
 ON snacks.id = maxs_favorite_snacks.snack_id
 WHERE snacks.vegetarian = 1 AND snacks.deep_fried = 1;
-```
+~~~
 
 becomes:
 
-```ruby
+~~~ruby
 snacks = Arel::Table.new(:snacks)
 maxs_favorite_snacks = Arel::Table.new(:maxs_favorite_snacks)
 
@@ -72,7 +70,7 @@ snacks.project(snacks[Arel.star])
     .on(snacks[:id].eq(maxs_favorite_snacks[:snack_id]))
   .where(snacks[:vegetarian].eq(1).and(snacks[:deep_fried].eq(1)))
   .to_sql
-```
+~~~
 
 What it lacks in readability it makes up for in composability.
 
@@ -93,7 +91,7 @@ Woo! That must be it.
 
 But they seemed pretty abstract when I looked at them:
 
-```ruby
+~~~ruby
 # arel/lib/arel/nodes/inner_join.rb
 module Arel
   module Nodes
@@ -101,14 +99,14 @@ module Arel
     end
   end
 end
-```
+~~~
 
 Hmm... my strings must be in another castle.
 
 Soon enough I discovered the `visitors` directory and a file called `to_sql.rb`
 which starts with a bunch of constants:
 
-```ruby
+~~~ruby
 WHERE    = ' WHERE '
 SPACE    = ' '
 COMMA    = ', '
@@ -116,7 +114,7 @@ GROUP_BY = ' GROUP BY '
 ORDER_BY = ' ORDER BY '
 WINDOW   = ' WINDOW '
 AND      = ' AND '
-```
+~~~
 
 Jackpot!
 
@@ -139,7 +137,7 @@ I imagine that would be crazy gross to add if they didn't use this pattern.
 
 Anyway, I took a peek at the `postgres.rb` visitor:
 
-```ruby
+~~~ruby
 module Arel
   module Visitors
     class PostgreSQL < Arel::Visitors::ToSql
@@ -168,7 +166,7 @@ module Arel
     end
   end
 end
-```
+~~~
 
 Then I thought: "Oh cool! I didn't know I could use Arel to generate a `DISTINCT
 ON` query."
@@ -182,31 +180,31 @@ I checked the README to see if it mentioned how to use it... no dice.
 
 You can tack a `distinct` on the end but that just gives you a normal distinct:
 
-```ruby
+~~~ruby
 snacks.project(snacks[Arel.star]).distinct.to_sql
 # => "SELECT DISTINCT \"snacks\".* FROM \"snacks\""
-```
+~~~
 
 Well, I thought, the `DISTINCT ON` is just another kind of node... maybe I can
 just stick it in the select and Arel would figure it out and everything would be
 ok:
 
-```ruby
+~~~ruby
 Country.select(
   Arel::Nodes::DistinctOn.new(
     Country.arel_table[:id]
   )
 ).select(Arel.star).to_sql
 # => "SELECT DISTINCT ON ( \"countries\".\"id\" ), * FROM \"countries\""
-```
+~~~
 
 Hmm looks kinda reasonable... but then I ran it:
 
-```ruby
+~~~
 PG::Error: ERROR:  syntax error at or near ","
 LINE 1: SELECT DISTINCT ON ( "countries"."id" ), * FROM "countries"
                                                ^
-```
+~~~
 
 Womp womp.
 Either this is a bug or I didn't know how to use `Arel::Nodes::DistinctOn`.
@@ -243,11 +241,11 @@ It should be just as easy as using `distinct`!
 
 You should be able to just do:
 
-```ruby
+~~~ruby
 table = Arel::Table.new(:users)
 table.project(Arel.star).distinct_on(table[:id]).to_sql
 # => "SELECT DISTINCT ON ( \"users\".\"id\" ) * FROM \"users\""
-```
+~~~
 
 It was up to me to fix this and restore balance to the universe and ~contribute
 to OSS~!

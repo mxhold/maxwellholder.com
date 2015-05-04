@@ -74,3 +74,6 @@ end
 activate :blog do |blog|
   blog.prefix = 'blog'
 end
+
+activate :syntax
+set :markdown_engine, :kramdown
