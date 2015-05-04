@@ -146,6 +146,4 @@ DEPENDENCIES
   middleman-blog
   middleman-livereload (~> 3.1.0)
   middleman-syntax
-  tzinfo-data
   vocal_tract_length
-  wdm (~> 0.1.0)
