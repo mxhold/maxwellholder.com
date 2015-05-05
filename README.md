@@ -22,7 +22,6 @@ ln -s ../../git_hooks/push-to-checkout push-to-checkout
 The assumes you have Ruby and Bundler already installed on the server and have
 Chruby installed in `/usr/local/share/chruby`.
 
-
 Then (on your local machine) add the server as a remote and push:
 
 ```
