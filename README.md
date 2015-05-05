@@ -19,5 +19,12 @@ git config receive.denyCurrentBranch updateInstead
 ln -s ./git_hooks/push-to-checkout ./.git/hooks/push-to-checkout
 ```
 
-The assumes you have Ruby and Bundler already installed.
+The assumes you have Ruby and Bundler already installed on the server.
+
+Then (on your local machine) add the server as a remote and push:
+
+```
+git remote add deploy git@server.com:/path/to/repo
+git push deploy
+```
 
