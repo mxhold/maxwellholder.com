@@ -2,6 +2,7 @@
 # Hooks are run from .git/
 # We need to go up a level to get to the project root
 cd ..
+echo "CWD: " . pwd
 bundle install --deployment
 bin/build
 
