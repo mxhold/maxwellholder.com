@@ -1,4 +1,5 @@
 #!/bin/bash
+git read-tree -u -m HEAD "$1"
 
 # Load Chruby to automatically load Ruby
 source /usr/local/share/chruby/chruby.sh
