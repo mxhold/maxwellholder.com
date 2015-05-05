@@ -1,8 +1,14 @@
 #!/bin/bash
+
+# Load Chruby to automatically load Ruby
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+
 # Hooks are run from .git/
 # We need to go up a level to get to the project root
 cd ..
-echo "CWD: " . pwd
+
 bundle install --deployment
+
 bin/build
 
