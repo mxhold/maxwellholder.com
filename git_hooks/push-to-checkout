@@ -1,0 +1,7 @@
+#!/bin/bash
+# Hooks are run from .git/
+# We need to go up a level to get to the project root
+cd ..
+bundle install --deployment
+bin/build
+
