@@ -6,5 +6,3 @@ gem "middleman-syntax"
 gem "middleman-livereload", "~> 3.1.0"
 
 gem 'vocal_tract_length'
-
-gem 'puma'

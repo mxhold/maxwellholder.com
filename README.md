@@ -7,25 +7,8 @@ changes made in `source/`.
 
 Run `bin/build` to build static pages from `source/` files.
 
-
-## Deploying
-
-To setup push to deploy, on the server you're deploying to run:
-
-```
-git clone https://github.com/mxhold/maxwellholder.com.git
-cd maxwellholder.com/.git/hooks
-git config receive.denyCurrentBranch updateInstead
-ln -s ../../git_hooks/push-to-checkout push-to-checkout
-```
-
-The assumes you have Ruby and Bundler already installed on the server and have
-Chruby installed in `/usr/local/share/chruby`.
-
-Then (on your local machine) add the server as a remote and push:
-
-```
-git remote add deploy git@server.com:/path/to/repo
-git push deploy
-```
-
+Run `bin/deploy` to deploy. This assumes you have `maxwellholder` set up in your
+SSH config to point to a server that will serve
+`/var/www/maxwellholder.com/current`. This also does not deploy anything for the
+`/vocal_tract_length` page, which must be deployed separately as it is not a
+static page.

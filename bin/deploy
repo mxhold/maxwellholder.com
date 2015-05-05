@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Immediately exit on any non-zero exit status
+set -e
+# Exit immediately when referencing unset variable
+set -u
+# By default, the exit status of piped commands is just the exit status of the
+# last command. This makes it the first non-zero exit status of any of the
+# commands (or zero if they all exited with zero).
+set -o pipefail
+
+ssh_host=maxwellholder
+deploy_to=/var/www/maxwellholder.com
+releases_dir="$deploy_to"/releases
+current_dir="$deploy_to"/current
+build_timestamp=$(date "+%Y%m%d%H%M%S")
+build_archive="$build_timestamp".tar.gz
+release_dirs_to_keep=3
+release_archives_to_keep=10
+
+bin/build
+chmod -R a+r build/
+tar zcfv "$build_archive" build/
+scp "$build_archive" "$ssh_host":"$releases_dir"
+ssh "$ssh_host" -T << EOF
+set -euo pipefail
+cd $releases_dir
+tar zxfv $build_archive
+mv build/ $build_timestamp
+cd $deploy_to
+if [ -e $current_dir ]; then
+  rm $current_dir
+fi
+ln -s $releases_dir/$build_timestamp $current_dir
+cd $releases_dir
+echo Removing all but the $release_dirs_to_keep most recent release directories...
+find . -mindepth 1 -maxdepth 1 -type d | sort | head -n -"$release_dirs_to_keep" | xargs -r rm -rf
+echo Removing all but the $release_archives_to_keep most recent release archives...
+find . -mindepth 1 -maxdepth 1 -type f | sort | head -n -"$release_archives_to_keep" | xargs -r rm -rf
+echo Done!
+EOF
+rm "$build_archive"
+
