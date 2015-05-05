@@ -14,9 +14,9 @@ To setup push to deploy, on the server you're deploying to run:
 
 ```
 git clone https://github.com/mxhold/maxwellholder.com.git
-cd maxwellholder.com
+cd maxwellholder.com/.git/hooks
 git config receive.denyCurrentBranch updateInstead
-ln -s ./git_hooks/push-to-checkout ./.git/hooks/push-to-checkout
+ln -s ../../git_hooks/push-to-checkout push-to-checkout
 ```
 
 The assumes you have Ruby and Bundler already installed on the server.
