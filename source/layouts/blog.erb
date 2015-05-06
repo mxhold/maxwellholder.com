@@ -4,8 +4,40 @@
   </nav>
   <article>
     <header>
-      <%= current_page.data.title %>
+      <h1><%= current_page.data.title %></h1>
+      <time datetime="<%= current_page.data.date %>">
+        <%= pretty_date(current_page.data.date) %>
+      </time>
     </header>
     <%= yield %>
   </article>
+  <footer class="blog-footer">
+    <div class="author-photo">
+    </div>
+    <div class="author-info">
+      <span class="author-name">
+        Max Holder
+      </span>
+      <ul>
+        <li>
+          <a href="mailto:mxhold@gmail.com">
+            <i class="fa fa-envelope"></i>
+            mxhold@gmail.com
+          </a>
+        </li>
+        <li>
+          <a href="http://twitter.com/maxholder">
+            <i class="fa fa-twitter"></i>
+            @maxholder
+          </a>
+        </li>
+        <li>
+          <a href="http://github.com/mxhold">
+            <i class="fa fa-github-alt"></i>
+            mxhold
+          </a>
+        </li>
+      </ul>
+    </div>
+  </footer>
 <% end %>

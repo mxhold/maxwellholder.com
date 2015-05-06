@@ -1,6 +1,6 @@
 ---
 title: "Contributing to Open Source using Copy and Paste"
-date: 2014-09-29 16:44:20 -0400
+date: 2014-09-29 13:40 UTC
 tags: [OSS, Open Source, Arel]
 ---
 
