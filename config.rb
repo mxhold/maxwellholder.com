@@ -91,3 +91,5 @@ helpers do
     Time.parse(string).strftime('%b %-d, %Y')
   end
 end
+activate :directory_indexes
+set :trailing_slash, false
