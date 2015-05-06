@@ -74,6 +74,7 @@ end
 activate :blog do |blog|
   blog.prefix = 'blog'
   blog.layout = 'blog'
+  blog.permalink = "{title}.html"
 end
 
 activate :syntax
