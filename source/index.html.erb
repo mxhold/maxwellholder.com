@@ -27,6 +27,7 @@
   <ul>
     <% blog.articles.each do |article| %>
       <li>
+      <%= pretty_date(article.data.date) %> - 
         <a href="<%= article.url %>">
           <%= article.title %>
         </a>
