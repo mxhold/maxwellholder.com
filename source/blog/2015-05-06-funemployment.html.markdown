@@ -1,5 +1,5 @@
 ---
-title: "Funemployment"
+title: "&ldquo;Funemployment&rdquo;"
 date: 2015-05-06 13:40 UTC
 tags:
 ---
