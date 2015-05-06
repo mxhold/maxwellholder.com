@@ -78,6 +78,7 @@ end
 
 activate :syntax
 set :markdown_engine, :kramdown
+set :markdown, smartypants: true
 
 require 'vocal_tract_length'
 map '/vocal_tract_length' do
