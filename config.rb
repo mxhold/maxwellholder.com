@@ -85,3 +85,8 @@ map '/vocal_tract_length' do
   run VocalTractLength::App
 end
 
+helpers do
+  def pretty_date(string)
+    Time.parse(string).strftime('%b %-d, %Y')
+  end
+end
