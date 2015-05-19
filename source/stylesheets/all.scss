@@ -72,7 +72,7 @@ article {
   border-top: 1px solid #e2e2e2;
   border-bottom: 1px solid #e2e2e2;
   width: 700px;
-  margin: 75px auto 120px;
+  margin: 75px auto 60px;
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -112,4 +112,10 @@ article {
       color: #000;
     }
   }
+}
+
+.copyright {
+  text-align: center;
+  margin-bottom: 60px;
+  line-height: 5px;
 }
