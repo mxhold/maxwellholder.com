@@ -232,6 +232,20 @@ Use the following checklist when writing Rails migrations to make sure you don't
 
 ## Data migrations
 
+- Should you really be changing data inside your migrations?
+
+  Some people are vehemently opposed to doing any kind of data manipulation inside their Rails migrations as they consider them only for changing the database schema.
+
+  You should talk to the people you're working with about how to handle data migrations and be aware of the pitfalls (see below) that can occur if you decide to do them inside your migrations.
+
+  One alternative is to write separate rake tasks that perform the data migrations alone so that you can then run them at a known point and review the changes to make sure they worked.
+
+  However you decide to handle data migrations, consider writing them in a way that minimizes the chance of losing data as much as possible.
+
+  For example, if you're splitting out a column into two new columns, first write a migration to add the new columns (and maybe also populate them or do this in a separate rake task). Then, only after you're confident the data has been moved over successfully, write a migration to remove the old column.
+
+  Ideally, each migration should still be fully reversible without losing data.
+
 - Did you call a model class from inside your migration?
 
   Since your models can change independently of your migration code, if you use your models inside your migrations you can end up writing a migration that works when you run it originally, but that causes errors after someone else changes the model later.
