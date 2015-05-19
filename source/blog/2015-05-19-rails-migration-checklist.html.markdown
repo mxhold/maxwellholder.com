@@ -10,7 +10,7 @@ Checklists are used by [airplane pilots and doctors](http://www.newyorker.com/ma
 
 Forgetting to add an index to a column in your migration is hardly a fatal error, but why shouldn't we use the same method to remember important steps in software development tasks?
 
-Use the following checklist when writing Rails migrations to make sure you haven't forgotten something important.
+Use the following checklist when writing Rails migrations to make sure you don't forget something important.
 
 # Rails Migration Checklist
 
