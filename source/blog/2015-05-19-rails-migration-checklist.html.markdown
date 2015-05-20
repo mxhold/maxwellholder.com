@@ -246,6 +246,31 @@ Use the following checklist when writing Rails migrations to make sure you don't
 
   Ideally, each migration should still be fully reversible without losing data.
 
+- Are you iterating over a big table with `each`?
+
+  Calling `.all.each` on a model will try to instantiate all the objects at once, which can be really slow if you have lots of them.
+
+  Instead, use [`find_each`](http://api.rubyonrails.org/classes/ActiveRecord/Batches.html#method-i-find_each) to find them in batches of 1000. Be aware that `find_each` will ignore any limits or orders you pass in (since it orders by id and limits by the batch size to find them in batches).
+
+  If you know you don't have to worry about validations, use [`update_all`](http://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-update_all) to issue a single `UPDATE` statement without the costs of instantiating any model objects.
+
+  ~~~ruby
+  # BAD (if you have lots of users) - instantiates all users at once
+  User.all.each do |user|
+    # ...
+  end
+
+  # GOOD - finds in batches of 1000
+  User.find_each do |user|
+    # ...
+  end
+
+  # BAD - find_each ignores limit and order options
+  User.order(:name).limit(25).find_each do |user|
+    # ...
+  end
+  ~~~
+
 - Did you call a model class from inside your migration?
 
   Since your models can change independently of your migration code, if you use your models inside your migrations you can end up writing a migration that works when you run it originally, but that causes errors after someone else changes the model later.
@@ -450,31 +475,6 @@ Use the following checklist when writing Rails migrations to make sure you don't
     def down
       remove_column :posts, :hidden
     end
-  end
-  ~~~
-
-- Are you iterating over a big table with `each`?
-
-  Calling `.all.each` on a model will try to instantiate all the objects at once, which can be really slow if you have lots of them.
-
-  Instead, use [`find_each`](http://api.rubyonrails.org/classes/ActiveRecord/Batches.html#method-i-find_each) to find them in batches of 1000. Be aware that `find_each` will ignore any limits or orders you pass in (since it orders by id and limits by the batch size to find them in batches).
-
-  If you know you don't have to worry about validations (which as you can see from above can be hard to know), use [`update_all`](http://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-update_all) to issue a single `UPDATE` statement without the costs of instantiating any model objects.
-
-  ~~~ruby
-  # BAD (if you have lots of users) - instantiates all users at once
-  User.all.each do |user|
-    # ...
-  end
-
-  # GOOD - finds in batches of 1000
-  User.find_each do |user|
-    # ...
-  end
-
-  # BAD - find_each ignores limit and order options
-  User.order(:name).limit(25).find_each do |user|
-    # ...
   end
   ~~~
 
