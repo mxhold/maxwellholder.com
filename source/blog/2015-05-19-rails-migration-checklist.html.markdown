@@ -348,6 +348,111 @@ Use the following checklist when writing Rails migrations to make sure you don't
 
   However, redefining model classes like this can cause problems with polymorphic relations since the `User` class in this case is actually defined as `SplitUserNames::User`.
 
+- Did you reference a model before changing its columns?
+
+  Your model classes can cache their column information in a way that leads to very unexpected behavior.
+
+  Use [`reset_column_information`](http://api.rubyonrails.org/classes/ActiveRecord/ModelSchema/ClassMethods.html#method-i-reset_column_information) after changing the schema to force Rails to reload a model's columns.
+
+  For example, first let's say you have a `Post` model with one post titled "Secret!" created this way:
+
+  ~~~ruby
+  class CreatePosts < ActiveRecord::Migration
+    def up
+      create_table :posts do |t|
+        t.string :title
+
+        t.timestamps null: false
+      end
+
+      Post.create!(title: 'Secret!')
+    end
+
+    def down
+      drop_table :posts
+    end
+  end
+  ~~~
+
+  All that is fine.
+
+  The following migration will work as expected, raising no exception:
+
+  ~~~ruby
+  class FlagHiddenPosts < ActiveRecord::Migration
+    def up
+      add_column :posts, :hidden, :boolean
+
+      Post.find_each do |post|
+        if post.title == 'Secret!'
+          post.hidden = true
+          post.save!
+        end
+      end
+
+      fail "Secret post not set to hidden!" unless Post.find_by!(title: 'Secret!').hidden
+    end
+
+    def down
+      remove_column :posts, :hidden
+    end
+  end
+  ~~~
+
+  But the following migration (which only differs in the addition of the `Post.first` line) will fail:
+
+  ~~~ruby
+  class FlagHiddenPosts < ActiveRecord::Migration
+    def up
+      Post.first
+
+      add_column :posts, :hidden, :boolean
+
+      Post.find_each do |post|
+        if post.title == 'Secret!'
+          post.hidden = true
+          post.save!
+        end
+      end
+
+      fail "Secret post not set to hidden!" unless Post.find_by!(title: 'Secret!').hidden
+    end
+
+    def down
+      remove_column :posts, :hidden
+    end
+  end
+  ~~~
+
+  This is because loading the first post caused Rails to load *and cache* the columns on the `Post` model. When we added the column to the posts table, we needed to tell Rails to reload the columns for that model.
+
+  Once we add a call to `Post.reset_column_information` after the `add_column`, it works and the following would not raise any exceptions:
+
+  ~~~ruby
+  class FlagHiddenPosts < ActiveRecord::Migration
+    def up
+      Post.first
+
+      add_column :posts, :hidden, :boolean
+
+      Post.reset_column_information
+
+      Post.find_each do |post|
+        if post.title == 'Secret!'
+          post.hidden = true
+          post.save!
+        end
+      end
+
+      fail "Secret post not set to hidden!" unless Post.find_by!(title: 'Secret!').hidden
+    end
+
+    def down
+      remove_column :posts, :hidden
+    end
+  end
+  ~~~
+
 - Are you iterating over a big table with `each`?
 
   Calling `.all.each` on a model will try to instantiate all the objects at once, which can be really slow if you have lots of them.
