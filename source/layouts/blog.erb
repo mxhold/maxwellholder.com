@@ -11,6 +11,21 @@
     </header>
     <%= yield %>
   </article>
+  <div class="subscribe-container">
+    <div class="subscribe">
+      <form action="https://tinyletter.com/maxholder" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/maxholder', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <h1>
+          Like this blog post?
+        </h1>
+        <p>
+          Get notified when I post in the future:
+        </p>
+          <input type="text" style="width:140px" name="email" id="tlemail" placeholder="you@example.com" />
+        <input type="hidden" value="1" name="embed"/>
+        <input type="submit" value="Subscribe" />
+      </form>
+    </div>
+  </div>
   <footer class="blog-footer">
     <div class="author-photo">
     </div>

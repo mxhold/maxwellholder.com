@@ -68,6 +68,34 @@ article {
   }
 }
 
+.subscribe-container {
+  max-width: 385px;
+  height: 180px;
+  margin:0 auto;
+  background-image: repeating-linear-gradient(135deg, #F29B91 0px,
+  #F09290 30px, transparent 30px, transparent 50px, #83B3DB 50px,
+  #84ADCB 80px, transparent 80px, transparent 100px);
+  padding: 11px;
+}
+
+.subscribe {
+  text-align: center;
+  background: white;
+  width: 100%;
+  height: 100%;
+  font-family: 'Open Sans', sans-serif;
+
+  h1 {
+    margin-top: 0px;
+    padding-top: 30px;
+    font-size: 22px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+}
+
 .blog-footer {
   border-top: 1px solid #e2e2e2;
   border-bottom: 1px solid #e2e2e2;
