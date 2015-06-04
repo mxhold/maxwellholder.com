@@ -441,13 +441,13 @@ Refused to connect to 'http://localhost:4000/posts' because it violates the foll
 
 If you're unfamiliar with what "Content Security Policy" means, the Mozilla Development Network provides [a good overview](https://developer.mozilla.org/en-US/docs/Web/Security/CSP).
 
-Basically, this is because Ember CLI, by default, includes [an addon](https://github.com/rwjblue/ember-cli-content-security-policy) that sets a CSP header on responses to the development server.
+Basically, this is because Ember CLI, by default, includes [an addon](https://github.com/rwjblue/ember-cli-content-security-policy) that sets a `Content-Security-Policy-Report-Only` header on responses to the development server.
 
 Your browser sees this header and spits out an error when we try to make a request to any origin other than the server's origin (http://localhost:4200).
 
-Normally, this is good. If someone managed to inject some JS on your site, this would prevent their script from being able to connect to some random server.
+Since the header is report only, the request still works but displays this error to remind us that we haven't set everything up correctly.
 
-In this case, we *do* want to connect to a different server: our Phoenix server.
+We want to have it all set up right so that if someone manages to inject some JS on your site, this prevents their script from being able to connect to some random server.
 
 We need to tell Ember that it is ok to load data from our Phoenix app since it is not from the same origin (same host but different port) as the Ember app.
 
@@ -476,7 +476,7 @@ if (environment === 'development') {
 
 Note that this is only relevant to the development environment since we won't be using Ember CLI to serve our app on production.
 
-Once we deploy our app, we'll have to configure our server to set its own CSP header. This addon is just to remind us.
+Once we deploy our app, we'll have to configure our server to set its own CSP header. This addon is just to keep us thinking about CSP so we don't forget to set it up.
 
 #### Cross-Origin Resource Sharing
 
@@ -574,7 +574,7 @@ def render("show.json", %{post: post}) do
 end
 ~~~
 
-Now we can restart our Phoenix server and try <http://localhost:4200/posts> again.
+Now we can try <http://localhost:4200/posts> again.
 
 The page will still just say "Welcome to Ember.js" but we shouldn't have any errors anymore. Yay!
 
