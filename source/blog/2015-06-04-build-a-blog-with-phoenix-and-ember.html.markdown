@@ -1220,4 +1220,4 @@ But hopefully this post has provided a good starting point for getting to know b
 
 ## Did I miss anything?
 
-This blog post is [hosted on GitHub](https://github.com/mxhold/maxwellholder.com/blob/master/source/blog/2015-05-19-rails-migration-checklist.html.markdown) so feel free to file an issue or make a pull request!
+This blog post is [hosted on GitHub](https://github.com/mxhold/maxwellholder.com/blob/master/source/blog/2015-06-04-build-a-blog-with-phoenix-and-ember.html.markdown) so feel free to file an issue or make a pull request!
