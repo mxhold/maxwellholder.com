@@ -402,6 +402,8 @@ To get it to show the example post that we created before, we'll need to setup t
 Change `app/routes/posts.js` to:
 
 ~~~javascript
+import Ember from 'ember';
+
 export default Ember.Route.extend({
   model: function() {
     return this.store.find('post');
@@ -447,8 +449,6 @@ Your browser sees this header and spits out an error when we try to make a reque
 
 Since the header is report only, the request still works but displays this error to remind us that we haven't set everything up correctly.
 
-We want to have it all set up right so that if someone manages to inject some JS on your site, this prevents their script from being able to connect to some random server.
-
 We need to tell Ember that it is ok to load data from our Phoenix app since it is not from the same origin (same host but different port) as the Ember app.
 
 We can do this by editing `config/environment.js` and changing:
@@ -477,6 +477,8 @@ if (environment === 'development') {
 Note that this is only relevant to the development environment since we won't be using Ember CLI to serve our app on production.
 
 Once we deploy our app, we'll have to configure our server to set its own CSP header. This addon is just to keep us thinking about CSP so we don't forget to set it up.
+
+We want to have it all set up right so that if someone manages to inject some JS on your site, this prevents their script from being able to connect to some random server.
 
 #### Cross-Origin Resource Sharing
 
@@ -548,7 +550,9 @@ WARNING: Encountered "data" in payload, but no model was found for model name "d
 
 This is Ember's REST serializer complaining that the root of the JSON we're loading is `data`, so it is trying to find a `datum` model, which doesn't exist.
 
-[The documentation](http://guides.emberjs.com/v1.11.0/models/the-rest-adapter/#toc_json-root) tells us the root needs to be `posts` in this case.
+[The documentation](http://guides.emberjs.com/v1.12.0/models/the-rest-adapter/#toc_json-root) tells us the root needs to be `posts` in this case.
+
+Note: I wouldn't be surprised to see this may change in the future as the [JSON API](http://jsonapi.org/) spec that Ember-creator Yehuda Katz is co-writing uses `data` as the root element.
 
 We can change this easily enough by editing `web/views/post_view.ex` to change:
 
@@ -654,7 +658,7 @@ Finally, let's add a link to this new route from the Post index page by editing 
 <ul>
   {{#each post in model}}
   <li>
-    {{#link-to 'posts.post' post.id}}
+    {{#link-to 'posts.post' post}}
       {{post.title}}
     {{/link-to}}
   </li>
@@ -691,10 +695,10 @@ export default Ember.Route.extend({
     return this.store.createRecord('post');
   },
   actions: {
-    save: function(post) {
-      var _this = this;
-      post.save().then(function() {
-        _this.transitionTo('posts');
+    save: function() {
+      var post = this.currentModel;
+      post.save().then(() => {
+        this.transitionTo('posts');
       });
     }
   }
@@ -716,7 +720,7 @@ Then we'll add a new template at `app/templates/posts/new.hbs`:
   {{textarea value=model.body id="body"}}
 </p>
 
-<button {{action 'save' model}} id="save">Save</button>
+<button {{action 'save'}} id="save">Save</button>
 ~~~
 
 Finally, we'll add a link to our new page by editing `app/templates/posts.hbs`:
@@ -810,10 +814,10 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   actions: {
-    save: function(post) {
-      var _this = this;
-      post.save().then(function() {
-        _this.transitionTo('posts.post', post.id);
+    save: function() {
+      var post = this.currentModel;
+      post.save().then(() => {
+        this.transitionTo('posts.post', post.id);
       });
     }
   }
@@ -835,7 +839,7 @@ Make a new file at `app/templates/posts/_form.hbs`:
   {{textarea value=model.body id="body"}}
 </p>
 
-<button {{action 'save' model}} id="save">Save</button>
+<button {{action 'save'}} id="save">Save</button>
 ~~~
 
 Change `app/templates/posts/new.hbs` to:
@@ -886,11 +890,11 @@ export default Ember.Route.extend({
     return this.store.find('post', params.post_id);
   },
   actions: {
-    delete: function(post) {
+    delete: function() {
+      var post = this.currentModel;
       post.deleteRecord();
-      var _this = this;
-      post.save().then(function() {
-        _this.transitionTo('posts');
+      post.save().then(() => {
+        this.transitionTo('posts');
       });
     }
   }
@@ -908,7 +912,7 @@ Edit `app/templates/posts/post.hbs`:
 
 {{#link-to 'posts.post.edit' model}}Edit{{/link-to}}
 
-<button {{action "delete" model}}>Delete</button>
+<button {{action "delete"}}>Delete</button>
 
 {{outlet}}
 ~~~
