@@ -552,7 +552,7 @@ This is Ember's REST serializer complaining that the root of the JSON we're load
 
 [The documentation](http://guides.emberjs.com/v1.12.0/models/the-rest-adapter/#toc_json-root) tells us the root needs to be `posts` in this case.
 
-Note: I wouldn't be surprised to see this may change in the future as the [JSON API](http://jsonapi.org/) spec that Ember-creator Yehuda Katz is co-writing uses `data` as the root element.
+Note: I wouldn't be surprised to see this may change in the future as the [JSON API](http://jsonapi.org/) spec that Ember co-creator Yehuda Katz is co-writing uses `data` as the root element.
 
 We can change this easily enough by editing `web/views/post_view.ex` to change:
 
