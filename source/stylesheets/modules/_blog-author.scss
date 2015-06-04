@@ -1,0 +1,49 @@
+.blog-footer {
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+  max-width: 700px;
+  margin: 75px auto 60px;
+  padding: 20px;
+  @include display(flex);
+  @include justify-content(center);
+  @include align-items(center);
+
+  .author-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background-image: image-url('max.jpg');
+    background-size: contain;
+  }
+
+  .author-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .author-info {
+    font-family: 'Open Sans', sans-serif;
+    margin-left: 30px;
+
+    ul {
+      font-size: 16px;
+      list-style-type: none;
+      padding: 0;
+      margin: 5px 0 0;
+    }
+
+    i {
+      margin-right: 2px;
+    }
+
+    a {
+      color: #777;
+      text-decoration: none;
+      border: none;
+    }
+
+    a:hover {
+      color: #000;
+    }
+  }
+}

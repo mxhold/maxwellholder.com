@@ -1,0 +1,30 @@
+.subscribe-container {
+  max-width: 530px;
+  height: 180px;
+  margin: $large-spacing auto $large-spacing;
+  background-image: repeating-linear-gradient(135deg, #F29B91 0px,
+  #F09290 30px, transparent 30px, transparent 50px, #83B3DB 50px,
+  #84ADCB 80px, transparent 80px, transparent 100px);
+  padding: $small-spacing;
+}
+
+.subscribe {
+  text-align: center;
+  background: white;
+  width: 100%;
+  height: 100%;
+  font-family: 'Open Sans', sans-serif;
+
+  h1 {
+    margin-top: 0px;
+    padding-top: $small-spacing;
+    font-size: 22px;
+  }
+
+  p {
+    font-family: $sans-serif;
+    font-size: 18px;
+    margin-bottom: $small-spacing;
+  }
+}
+

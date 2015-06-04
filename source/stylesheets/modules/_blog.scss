@@ -1,0 +1,36 @@
+.blog-post {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .blog-header {
+    text-align: center;
+    margin-bottom: $base-spacing;
+  }
+
+  .blog-title {
+    font-size: $main-header-font-size;
+    font-weight: bold;
+  }
+
+  .publish-date {
+    color: lighten($base-font-color, 50%);
+  }
+
+  li {
+    font-size: 20px;
+
+    p:first-of-type {
+      font-family: $serif;
+      font-weight: bold;
+      margin-bottom: $small-spacing;
+    }
+
+    li {
+      font-size: $base-font-size;
+      font-family: $serif;
+      margin-bottom: $small-spacing;
+    }
+  }
+}
+

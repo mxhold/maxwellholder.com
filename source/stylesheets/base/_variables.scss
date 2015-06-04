@@ -1,0 +1,19 @@
+// Typography
+$sans-serif: "Open Sans", $helvetica;
+$serif: 'Merriweather', $georgia;
+
+$base-font-family: $sans-serif;
+$base-font-size: 16px;
+$base-font-color: black;
+$base-line-height: 1.5;
+
+$main-header-font-size: 32px;
+$base-header-font-size: 24px;
+
+$article-font-size: 18px;
+
+// Spacing
+
+$base-spacing: $base-line-height * 1em;
+$small-spacing: $base-spacing / 2;
+$large-spacing: $base-spacing * 2;

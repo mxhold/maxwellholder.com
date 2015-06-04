@@ -5,4 +5,6 @@ gem "middleman-blog"
 gem "middleman-syntax"
 gem "middleman-livereload", "~> 3.1.0"
 
+gem 'bourbon'
+
 gem 'vocal_tract_length'

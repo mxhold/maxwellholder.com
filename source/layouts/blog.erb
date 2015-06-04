@@ -1,11 +1,11 @@
 <% wrap_layout :layout do %>
-  <nav>
+  <nav class="global-nav">
     <a href="/">Home</a>
   </nav>
-  <article>
-    <header>
-      <h1><%= current_page.data.title %></h1>
-      <time datetime="<%= current_page.data.date %>">
+  <article class="blog-post">
+    <header class="blog-header">
+      <h1 class="blog-title"><%= current_page.data.title %></h1>
+      <time class="publish-date" datetime="<%= current_page.data.date %>">
         <%= pretty_date(current_page.data.date) %>
       </time>
     </header>
