@@ -627,7 +627,7 @@ Router.map(function() {
 });
 ~~~
 
-Then we need to add a new file at `app/routes/post.js` with the contents:
+Then we need to add a new file at `app/routes/posts/post.js` with the contents:
 
 ~~~javascript
 import Ember from 'ember';
