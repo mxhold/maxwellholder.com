@@ -1,6 +1,6 @@
 ---
 title: Build a Blog with Phoenix and Ember.js
-date: 2015-05-21 12:24 UTC
+date: 2015-06-04 12:24 UTC
 tags:
 ---
 
