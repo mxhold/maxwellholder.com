@@ -411,7 +411,7 @@ export default Ember.Route.extend({
 });
 ~~~
 
-Now when you visit <http://localhost:4200/posts> you'll get several errors (make sure to have your browser's JavaScript console open to see it), the first being:
+Now when you visit <http://localhost:4200/posts> you'll get several errors (make sure to have your browser's JavaScript console open when you load the page to see them), the first being:
 
 ~~~
 GET http://localhost:4200/posts 404 (Not Found)
@@ -482,7 +482,7 @@ We want to have it all set up right so that if someone manages to inject some JS
 
 #### Cross-Origin Resource Sharing
 
-Now when we load <http://localhost:4200/posts> we get yet another, different error:
+Now when we load <http://localhost:4200/posts> we get yet another error:
 
 ~~~
 XMLHttpRequest cannot load http://localhost:4000/posts. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:4200' is therefore not allowed access.
@@ -494,7 +494,7 @@ Again, MDN describes in detail how [Cross-Origin Resource Sharing](https://devel
 
 Your browser is now willing to make the call to the Phoenix server (since we relaxed the CSP headers above), but when it receives the response, it checks the headers for this `Access-Control-Allow-Origin` header, which we are not sending.
 
-As the name implies, this header lets the server specify which origins should be able to load this resource. Since we aren't sending this header, the browser errors.
+As the name implies, this header lets the server specify which origins should be able to load this resource.
 
 We need to send this header from our Phoenix app. Fortunately, there is a library ([PlugCors](https://github.com/bryanjos/plug_cors)) for doing just that.
 
@@ -540,7 +540,7 @@ pipeline :api do
 end
 ~~~
 
-Now start your Phoenix server backup with `mix phoenix.server` and try to hit <http://localhost:4200/posts> again.
+Now start your Phoenix server back up with `mix phoenix.server` and try to hit <http://localhost:4200/posts> again.
 
 Now we get a cryptic error but a helpful warning before it:
 
@@ -586,7 +586,7 @@ If you have the Ember inspector installed, you should be able to navigate to `Da
 
 Now we need to change the templates to show this data that we are now loading.
 
-Switch back to your Ember project and edit `app/templates/posts.hbs` to be just:
+Switch back to your Ember project and edit `app/templates/posts.hbs` to be:
 
 ~~~handlebars
 <h2>Posts</h2>
@@ -744,7 +744,7 @@ Finally, we'll add a link to our new page by editing `app/templates/posts.hbs`:
 
 Now we should be able to click "New post" from our `/posts` page and be taken to a form.
 
-Fill in some values (and delight in the two-way data binding we get for free) and click the "Save" button.
+Fill in some values (and delight in the two-way data binding we get for free!) and click the "Save" button.
 
 Whomp whomp. A new error!
 
@@ -818,6 +818,24 @@ export default Ember.Route.extend({
       var post = this.currentModel;
       post.save().then(() => {
         this.transitionTo('posts.post', post.id);
+      });
+    }
+  }
+});
+~~~
+
+Note: if you've never seen the above [fat arrow syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions), it is a part of [ES6](https://people.mozilla.org/~jorendorff/es6-draft.html) that Ember CLI will transpile into ES5 thanks to the [Babel](https://github.com/babel/ember-cli-babel) library. The above would be equivalent to:
+
+~~~javascript
+import Ember from 'ember';
+
+export default Ember.Route.extend({
+  actions: {
+    save: function() {
+      var post = this.currentModel;
+      var that = this;
+      post.save().then(function() {
+        that.transitionTo('posts.post', post.id);
       });
     }
   }
@@ -1179,7 +1197,7 @@ This is because the Ember buildpack does not set any of these headers in the Ngi
 
 The Ember buildback also takes a different approach for getting past CORS by setting up a [proxy_pass](http://oskarhane.com/avoid-cors-with-nginx-proxy_pass/), which we don't need since we've explicitly added our Ember origin to the headers in our Phoenix app.
 
-We can override the buildpack's nginx configuration by copying it and making some changes:
+We can override the buildpack's Nginx configuration by copying it and making some changes:
 
 ~~~bash
 wget https://raw.githubusercontent.com/tonycoco/heroku-buildpack-ember-cli/master/config/nginx.conf.erb

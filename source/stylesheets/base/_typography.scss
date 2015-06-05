@@ -52,3 +52,8 @@ ul {
 hr {
   margin: $large-spacing 0;
 }
+
+p code {
+  font-family: $mono;
+  background-color: #f2f2f2;
+}
