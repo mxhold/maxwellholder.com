@@ -972,7 +972,7 @@ Now let's share our app with the world.
 Create a `Procfile` at the root of your Phoenix project with the following contents:
 
 ~~~
-web: yes | mix compile.protocols && elixir -pa _build/prod/consolidated -S mix phoenix.server
+web: mix phoenix.server
 ~~~
 
 Then initialize a git repository and commit your code:
