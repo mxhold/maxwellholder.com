@@ -1,29 +1,19 @@
 <h1>Maxwell Holder</h1>
 <section>
-  <h1>About</h1>
+  <h2>About</h3>
   <%= image_tag 'max.jpg', alt: 'Max', height: 240, width: 240 %>
   <p>
     Howdy! My name is Maxwell Holder, but you can call me Max.
   </p>
   <p>
-    I'm a Ruby on Rails developer in Durham, NC.
+    I'm a Ruby on Rails developer in Durham, NC (soon to be in San Francisco, CA).
   </p>
   <p>
     I like linguistics, programming, coffee, cooking, and eating.
   </p>
 </section>
 <section>
-  <h1>Cool stuff</h1>
-  <ul>
-    <li>
-      <a href="vocal_tract_length/">
-        How Long is your Vocal Tract?
-      </a>
-    </li>
-  </ul>
-</section>
-<section>
-  <h1>Blog posts</h1>
+  <h2>Blog posts</h2>
   <ul>
     <% blog.articles.each do |article| %>
       <li>
@@ -36,7 +26,37 @@
   </ul>
 </section>
 <section>
-  <h1>Links</h1>
+  <h2>Projects</h2>
+  <ul>
+    <li>
+      <a href="https://github.com/mxhold/lifelike">lifelike</a>
+      -
+      a gem for simulating <a href="https://en.wikipedia.org/wiki/Life-like_cellular_automaton">Life-like cellular automata</a>, coded with emphasis on the single responsibility principle
+    </li>
+    <li>
+      <a href="https://github.com/mxhold/elo_rating">elo_rating</a>
+      -
+      a tiny gem for calculating <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo ratings</a>
+    </li>
+    <li>
+      <a href="https://github.com/mxhold/vimperor">Vimperor</a>
+      -
+      a Ruby on Rails app for generating .vimrc files
+    </li>
+  </ul>
+</section>
+<section>
+  <h2>Cool stuff</h2>
+  <ul>
+    <li>
+      <a href="vocal_tract_length/">
+        How Long is your Vocal Tract?
+      </a>
+    </li>
+  </ul>
+</section>
+<section>
+  <h2>Links</h2>
   <ul>
     <li><a href="mailto:mxhold@gmail.com">Email</a></li>
     <li><a href="https://github.com/mxhold">GitHub</a></li>
