@@ -76,6 +76,7 @@ activate :blog do |blog|
   blog.layout = 'blog'
   blog.permalink = "{title}.html"
 end
+page "blog/feed.xml", layout: false
 
 activate :syntax
 set :markdown_engine, :kramdown
