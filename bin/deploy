@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo Aborting: git status must be clean
+  exit 1
+fi
+
 # Immediately exit on any non-zero exit status
 set -e
 # Exit immediately when referencing unset variable
