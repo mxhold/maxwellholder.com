@@ -71,6 +71,8 @@ configure :build do
   # set :http_prefix, "/Content/images/"
 end
 
+page "sitemap.xml", layout: false
+
 activate :blog do |blog|
   blog.prefix = 'blog'
   blog.layout = 'blog'

@@ -14,20 +14,11 @@
   <loc>http://maxwellholder.com/vocal_tract_length/</loc>
   <lastmod>2015-05-05T19:35:25+00:00</lastmod>
 </url>
-<url>
-  <loc>http://maxwellholder.com/blog/build-a-blog-with-phoenix-and-ember</loc>
-  <lastmod>2015-06-04T16:29:37+00:00</lastmod>
-</url>
-<url>
-  <loc>http://maxwellholder.com/blog/rails-migration-checklist</loc>
-  <lastmod>2015-05-19T17:33:24+00:00</lastmod>
-</url>
-<url>
-  <loc>http://maxwellholder.com/blog/funemployment</loc>
-  <lastmod>2015-05-19T16:29:37+00:00</lastmod>
-</url>
-<url>
-  <loc>http://maxwellholder.com/blog/contributing-to-open-source-with-copy-paste</loc>
-  <lastmod>2015-05-19T16:29:37+00:00</lastmod>
-</url>
+
+<% blog.articles.each do |article| %>
+  <url>
+    <loc><%= URI.join("http://maxwellholder.com/", article.url) %></loc>
+    <lastmod><%= File.mtime(article.source_file).iso8601 %></lastmod>
+  </url>
+<% end %>
 </urlset>
