@@ -270,24 +270,6 @@ mix phoenix.gen.json Post posts title:string body:text
 
 This is very similar to the generators for Rails, except you'll notice that Phoenix does not try to guess the plural form for the table name.
 
-Before we can run the migration to create this new table, we'll need to setup our database:
-
-~~~bash
-mix ecto.create
-# should output:
-The database for PeepBlogBackend.Repo has been created.
-~~~
-
-Then we can run the migration to create the `posts` table:
-
-~~~bash
-mix ecto.migrate
-# should output:
-[info] == Running PeepBlogBackend.Repo.Migrations.CreatePost.change/0 forward
-[info] create table posts
-[info] == Migrated in 0.0s
-~~~
-
 Now we need to update the router for our new resource.
 
 Edit `web/router.ex` and replace the contents with:
@@ -309,6 +291,24 @@ end
 ~~~
 
 This adds our new resource and removes the HTML stuff we don't need.
+Before we can run the migration to create this new table, we'll need to setup our database:
+
+~~~bash
+mix ecto.create
+# should output:
+The database for PeepBlogBackend.Repo has been created.
+~~~
+
+Then we can run the migration to create the `posts` table:
+
+~~~bash
+mix ecto.migrate
+# should output:
+[info] == Running PeepBlogBackend.Repo.Migrations.CreatePost.change/0 forward
+[info] create table posts
+[info] == Migrated in 0.0s
+~~~
+
 
 Now we should be able to test it!
 
@@ -323,38 +323,6 @@ curl -X POST -H "Content-Type: application/json" -d '{ "post": { "title": "Test 
 # should output:
 {"data":{"id":1}}
 
-curl -H "Content-Type: application/json" http://localhost:4000/posts/1
-# should output:
-{"data":{"id":1}}
-~~~
-
-Hmm looks like it worked, but it would be nice to see *all* of the post's attributes, not just the id.
-
-We can fix that by editing `web/views/post_view.ex`.
-
-We want to change the function:
-
-~~~elixir
-def render("post.json", %{post: post}) do
-  %{id: post.id}
-end
-~~~
-
-to:
-
-~~~elixir
-def render("post.json", %{post: post}) do
-  %{
-    id: post.id,
-    title: post.title,
-    body: post.body
-  }
-end
-~~~
-
-Then when we test the show page again:
-
-~~~bash
 curl -H "Content-Type: application/json" http://localhost:4000/posts/1
 # should output:
 {"data":{"title":"Test title","id":1,"body":"Lorem ipsum"}}
