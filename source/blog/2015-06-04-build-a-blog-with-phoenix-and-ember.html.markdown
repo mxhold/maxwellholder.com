@@ -504,7 +504,7 @@ Switch to your Phoenix project directory, stop the Phoenix server, and edit your
 defp deps do
   [
     # ...
-    {:plug_cors, "~> 0.7"},
+    {:plug_cors, "~> 0.7.3"},
   ]
 end
 ~~~
