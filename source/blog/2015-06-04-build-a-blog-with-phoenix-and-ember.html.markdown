@@ -14,7 +14,7 @@ Rails offered a massive boost in productivity by focusing on convention over con
 
 Since then, a countless number of JavaScript frameworks and libraries have been released, leading to a shared experience by many web developers of [*JavaScript Framework Fatigue*](http://brewhouse.io/blog/2015/05/13/emberjs-an-antidote-to-your-hype-fatigue.html).
 
-Rails continues to be a useful tool for making web apps, but falls short of offering the level of iteractivity that others have sought from Single Page Application frameworks like [Ember.js](http://emberjs.com).
+Rails continues to be a useful tool for making web apps, but falls short of offering the level of interactivity that others have sought from Single Page Application frameworks like [Ember.js](http://emberjs.com).
 
 Using Rails as the backend API for a Ember.js app is certainly a viable option, but [Phoenix](http://phoenixframework.org) is becoming a more and more worthy competitor every day by offering features like [Channels](http://www.phoenixframework.org/v0.13.1/docs/channels) using WebSockets. Phoenix is not even 1.0 yet, but is already [inspiring](https://www.youtube.com/watch?v=oMlX9i9Icno&t=1h9m) features in Rails.
 
@@ -24,7 +24,7 @@ More and more applications are sure to be written in the [PEEP stack](https://me
 
 The **Phoenix** framework, written in [**Elixir**](http://elixir-lang.org), can leverage the mature (and fast) Erlang VM to provide fault-tolerant systems while still maintaining the same level of expressiveness (and developer productivity) as a language like Ruby.
 
-**Ember.js** offers stability amidst the ever-changing landscape of JS frontend frameworks. It attempts to establish conventions on the frontend like Rails did before while [happily borrowing](https://github.com/emberjs/ember.js/pull/10501) good ideas from other frameworks, all to make building highly iteractive applications much easier.
+**Ember.js** offers stability amidst the ever-changing landscape of JS frontend frameworks. It attempts to establish conventions on the frontend like Rails did before while [happily borrowing](https://github.com/emberjs/ember.js/pull/10501) good ideas from other frameworks, all to make building highly interactive applications much easier.
 
 **PostgreSQL** is an excellent database system and happens to be the most well-supported by [Ecto](https://github.com/elixir-lang/ecto), the Elixir database wrapper used in Phoenix.
 
@@ -126,7 +126,7 @@ You can verify this all worked by running:
 ~~~bash
 psql -U postgres -c "select 1+1;"
 # should output:
- ?column? 
+ ?column?
 ----------
         2
 (1 row)
