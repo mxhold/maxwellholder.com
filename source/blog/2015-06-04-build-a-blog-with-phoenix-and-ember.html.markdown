@@ -464,7 +464,7 @@ Your browser is now willing to make the call to the Phoenix server (since we rel
 
 As the name implies, this header lets the server specify which origins should be able to load this resource.
 
-We need to send this header from our Phoenix app. Fortunately, there is a library ([PlugCors](https://github.com/bryanjos/plug_cors)) for doing just that.
+We need to send this header from our Phoenix app. Fortunately, there is a library ([Corsica](https://github.com/whatyouhide/corsica)) for doing just that.
 
 Switch to your Phoenix project directory, stop the Phoenix server, and edit your `mix.exs` file to add the dependency:
 
@@ -472,7 +472,7 @@ Switch to your Phoenix project directory, stop the Phoenix server, and edit your
 defp deps do
   [
     # ...
-    {:plug_cors, "~> 0.7.3"},
+    {:corsica, "~> 0.4"}
   ]
 end
 ~~~
@@ -484,28 +484,15 @@ mix deps.get
 # should output:
 Running dependency resolution
 Dependency resolution completed successfully
-  plug_cors: v0.7.3
-* Getting plug_cors (Hex package)
-Checking package (https://s3.amazonaws.com/s3.hex.pm/tarballs/plug_cors-0.7.3.tar)
-Fetched package
-Unpacked package tarball (/Users/max/.hex/packages/plug_cors-0.7.3.tar)
+  corsica: v0.4.0
+* Getting corsica (Hex package)
 ~~~
 
-Now edit `web/router.ex` to change:
+Now edit `lib/peep_blog_backend/endpoint.ex` and add the Corsica plug before the Router plug near the bottom of the file:
 
 ~~~elixir
-pipeline :api do
-  plug :accepts, ["json"]
-end
-~~~
-
-to:
-
-~~~elixir
-pipeline :api do
-  plug :accepts, ["json"]
-  plug PlugCors, [origins: ["localhost:4200"]]
-end
+plug Corsica, [origins: ["http://localhost:4200"]]
+plug PeepBlogBackend.Router
 ~~~
 
 Now start your Phoenix server back up with `mix phoenix.server` and try to hit <http://localhost:4200/posts> again.
@@ -726,34 +713,11 @@ The browser sends this preflight request to make sure the server knows about COR
 
 We have the headers set right, but we need to have our Phoenix server respond to OPTIONS requests.
 
-To do this, switch to your Phoenix project and edit `web/router.ex` to be:
+To do this, switch to your Phoenix project and edit `lib/peep_blog_backend/endpoint.ex` we are adding the allow_headers to our Corsica plug:
 
 ~~~elixir
-defmodule PeepBlogBackend.Router do
-  use PeepBlogBackend.Web, :router
-
-  pipeline :api do
-    plug :accepts, ["json"]
-    plug PlugCors, [origins: ["localhost:4200"]]
-  end
-
-  scope "/", PeepBlogBackend do
-    pipe_through :api
-
-    resources "/posts", PostController
-    options "/posts*anything", PostController, :options
-  end
-end
-~~~
-
-and edit your `web/controllers/post_controller.ex` to add a new `options` function at the top before the `def index` line:
-
-~~~elixir
-def options(conn, _params) do
-  conn
-  |> put_status(200)
-  |> text(nil)
-end
+plug Corsica, [origins: ["http://localhost:4200"], allow_headers: ["accept", "content-type"]]
+plug PeepBlogBackend.Router
 ~~~
 
 Try to submit the new post form again and this time it should work!
