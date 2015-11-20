@@ -68,7 +68,7 @@ Verify it worked:
 ~~~bash
 elixir --version
 # should output:
-Elixir 1.0.4
+Elixir 1.1.1
 ~~~
 
 ### Phoenix
@@ -84,15 +84,15 @@ mix local.hex
 Then, we can install Phoenix:
 
 ~~~bash
-mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v0.13.1/phoenix_new-0.13.1.ez
+mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v1.0.3/phoenix_new-1.0.3.ez
 ~~~
 
 Verify it worked:
 
 ~~~bash
-mix --help | grep phoenix
+mix --help | grep phoenix.new
 # should output:
-mix phoenix.new       # Create a new Phoenix v0.13.1 application
+mix phoenix.new         # Create a new Phoenix v1.0.3 application
 ~~~
 
 ### PostgreSQL
