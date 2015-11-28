@@ -4,6 +4,12 @@ date: 2015-06-04 12:24 UTC
 tags:
 ---
 
+<div style="border: 1px solid red; background-color: pink; padding: 5px">
+  This post is <strong>outdated</strong>. I'm leaving it here for reference since it may still be helpful, but keep in mind that some of the code used below is likely deprecated and not the current best practice.
+
+If you'd like to help keep it updated, feel free to <a style="border-bottom: 1px solid black" href="https://github.com/mxhold/maxwellholder.com/blob/master/source/blog/2015-06-04-build-a-blog-with-phoenix-and-ember.html.markdown">make a pull request</a>. Thanks!
+</div>
+
 ## Moving beyond Rails
 
 A lot of new frameworks have emerged in the last couple of years aimed at making web applications easier to build.
