@@ -14,7 +14,7 @@ Rails offered a massive boost in productivity by focusing on convention over con
 
 Since then, a countless number of JavaScript frameworks and libraries have been released, leading to a shared experience by many web developers of [*JavaScript Framework Fatigue*](http://brewhouse.io/blog/2015/05/13/emberjs-an-antidote-to-your-hype-fatigue.html).
 
-Rails continues to be a useful tool for making web apps, but falls short of offering the level of iteractivity that others have sought from Single Page Application frameworks like [Ember.js](http://emberjs.com).
+Rails continues to be a useful tool for making web apps, but falls short of offering the level of interactivity that others have sought from Single Page Application frameworks like [Ember.js](http://emberjs.com).
 
 Using Rails as the backend API for a Ember.js app is certainly a viable option, but [Phoenix](http://phoenixframework.org) is becoming a more and more worthy competitor every day by offering features like [Channels](http://www.phoenixframework.org/v0.13.1/docs/channels) using WebSockets. Phoenix is not even 1.0 yet, but is already [inspiring](https://www.youtube.com/watch?v=oMlX9i9Icno&t=1h9m) features in Rails.
 
@@ -24,7 +24,7 @@ More and more applications are sure to be written in the [PEEP stack](https://me
 
 The **Phoenix** framework, written in [**Elixir**](http://elixir-lang.org), can leverage the mature (and fast) Erlang VM to provide fault-tolerant systems while still maintaining the same level of expressiveness (and developer productivity) as a language like Ruby.
 
-**Ember.js** offers stability amidst the ever-changing landscape of JS frontend frameworks. It attempts to establish conventions on the frontend like Rails did before while [happily borrowing](https://github.com/emberjs/ember.js/pull/10501) good ideas from other frameworks, all to make building highly iteractive applications much easier.
+**Ember.js** offers stability amidst the ever-changing landscape of JS frontend frameworks. It attempts to establish conventions on the frontend like Rails did before while [happily borrowing](https://github.com/emberjs/ember.js/pull/10501) good ideas from other frameworks, all to make building highly interactive applications much easier.
 
 **PostgreSQL** is an excellent database system and happens to be the most well-supported by [Ecto](https://github.com/elixir-lang/ecto), the Elixir database wrapper used in Phoenix.
 
@@ -68,7 +68,7 @@ Verify it worked:
 ~~~bash
 elixir --version
 # should output:
-Elixir 1.0.4
+Elixir 1.1.1
 ~~~
 
 ### Phoenix
@@ -84,15 +84,15 @@ mix local.hex
 Then, we can install Phoenix:
 
 ~~~bash
-mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v0.13.1/phoenix_new-0.13.1.ez
+mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v1.0.3/phoenix_new-1.0.3.ez
 ~~~
 
 Verify it worked:
 
 ~~~bash
-mix --help | grep phoenix
+mix --help | grep phoenix.new
 # should output:
-mix phoenix.new       # Create a new Phoenix v0.13.1 application
+mix phoenix.new         # Create a new Phoenix v1.0.3 application
 ~~~
 
 ### PostgreSQL
@@ -126,7 +126,7 @@ You can verify this all worked by running:
 ~~~bash
 psql -U postgres -c "select 1+1;"
 # should output:
- ?column? 
+ ?column?
 ----------
         2
 (1 row)
@@ -464,7 +464,7 @@ Your browser is now willing to make the call to the Phoenix server (since we rel
 
 As the name implies, this header lets the server specify which origins should be able to load this resource.
 
-We need to send this header from our Phoenix app. Fortunately, there is a library ([PlugCors](https://github.com/bryanjos/plug_cors)) for doing just that.
+We need to send this header from our Phoenix app. Fortunately, there is a library ([Corsica](https://github.com/whatyouhide/corsica)) for doing just that.
 
 Switch to your Phoenix project directory, stop the Phoenix server, and edit your `mix.exs` file to add the dependency:
 
@@ -472,7 +472,7 @@ Switch to your Phoenix project directory, stop the Phoenix server, and edit your
 defp deps do
   [
     # ...
-    {:plug_cors, "~> 0.7.3"},
+    {:corsica, "~> 0.4"}
   ]
 end
 ~~~
@@ -484,28 +484,15 @@ mix deps.get
 # should output:
 Running dependency resolution
 Dependency resolution completed successfully
-  plug_cors: v0.7.3
-* Getting plug_cors (Hex package)
-Checking package (https://s3.amazonaws.com/s3.hex.pm/tarballs/plug_cors-0.7.3.tar)
-Fetched package
-Unpacked package tarball (/Users/max/.hex/packages/plug_cors-0.7.3.tar)
+  corsica: v0.4.0
+* Getting corsica (Hex package)
 ~~~
 
-Now edit `web/router.ex` to change:
+Now edit `lib/peep_blog_backend/endpoint.ex` and add the Corsica plug before the Router plug near the bottom of the file:
 
 ~~~elixir
-pipeline :api do
-  plug :accepts, ["json"]
-end
-~~~
-
-to:
-
-~~~elixir
-pipeline :api do
-  plug :accepts, ["json"]
-  plug PlugCors, [origins: ["localhost:4200"]]
-end
+plug Corsica, [origins: ["http://localhost:4200"]]
+plug PeepBlogBackend.Router
 ~~~
 
 Now start your Phoenix server back up with `mix phoenix.server` and try to hit <http://localhost:4200/posts> again.
@@ -726,34 +713,11 @@ The browser sends this preflight request to make sure the server knows about COR
 
 We have the headers set right, but we need to have our Phoenix server respond to OPTIONS requests.
 
-To do this, switch to your Phoenix project and edit `web/router.ex` to be:
+To do this, switch to your Phoenix project and edit `lib/peep_blog_backend/endpoint.ex` we are adding the allow_headers to our Corsica plug:
 
 ~~~elixir
-defmodule PeepBlogBackend.Router do
-  use PeepBlogBackend.Web, :router
-
-  pipeline :api do
-    plug :accepts, ["json"]
-    plug PlugCors, [origins: ["localhost:4200"]]
-  end
-
-  scope "/", PeepBlogBackend do
-    pipe_through :api
-
-    resources "/posts", PostController
-    options "/posts*anything", PostController, :options
-  end
-end
-~~~
-
-and edit your `web/controllers/post_controller.ex` to add a new `options` function at the top before the `def index` line:
-
-~~~elixir
-def options(conn, _params) do
-  conn
-  |> put_status(200)
-  |> text(nil)
-end
+plug Corsica, [origins: ["http://localhost:4200"], allow_headers: ["accept", "content-type"]]
+plug PeepBlogBackend.Router
 ~~~
 
 Try to submit the new post form again and this time it should work!
