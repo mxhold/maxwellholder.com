@@ -491,6 +491,13 @@ Fetched package
 Unpacked package tarball (/Users/max/.hex/packages/plug_cors-0.7.3.tar)
 ~~~
 
+First edit `lib/rest_api/endpoint.ex` to include PlugCors:
+
+~~~elixir
+ plug PlugCors
+ plug RestApi.Router
+~~~
+
 Now edit `web/router.ex` to change:
 
 ~~~elixir
