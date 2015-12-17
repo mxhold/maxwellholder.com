@@ -4,6 +4,12 @@ date: 2015-06-04 12:24 UTC
 tags:
 ---
 
+<div style="border: 1px solid red; background-color: pink; padding: 5px">
+  This post is <strong>outdated</strong>. I'm leaving it here for reference since it may still be helpful, but keep in mind that some of the code used below is likely deprecated and not the current best practice.
+
+If you'd like to help keep it updated, feel free to <a style="border-bottom: 1px solid black" href="https://github.com/mxhold/maxwellholder.com/blob/master/source/blog/2015-06-04-build-a-blog-with-phoenix-and-ember.html.markdown">make a pull request</a>. Thanks!
+</div>
+
 ## Moving beyond Rails
 
 A lot of new frameworks have emerged in the last couple of years aimed at making web applications easier to build.
@@ -16,7 +22,7 @@ Since then, a countless number of JavaScript frameworks and libraries have been 
 
 Rails continues to be a useful tool for making web apps, but falls short of offering the level of interactivity that others have sought from Single Page Application frameworks like [Ember.js](http://emberjs.com).
 
-Using Rails as the backend API for a Ember.js app is certainly a viable option, but [Phoenix](http://phoenixframework.org) is becoming a more and more worthy competitor every day by offering features like [Channels](http://www.phoenixframework.org/v0.13.1/docs/channels) using WebSockets. Phoenix is not even 1.0 yet, but is already [inspiring](https://www.youtube.com/watch?v=oMlX9i9Icno&t=1h9m) features in Rails.
+Using Rails as the backend API for a Ember.js app is certainly a viable option, but [Phoenix](http://phoenixframework.org) is becoming a more and more worthy competitor every day by offering features like [Channels](http://www.phoenixframework.org/v0.13.1/docs/channels) using WebSockets. Phoenix is at version 1.1, and is already [inspiring](https://www.youtube.com/watch?v=oMlX9i9Icno&t=1h9m) new features in Rails.
 
 ## The PEEP Stack
 
@@ -84,7 +90,7 @@ mix local.hex
 Then, we can install Phoenix:
 
 ~~~bash
-mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v1.0.3/phoenix_new-1.0.3.ez
+mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v1.1.0/phoenix_new-1.1.0.ez
 ~~~
 
 Verify it worked:
@@ -92,7 +98,7 @@ Verify it worked:
 ~~~bash
 mix --help | grep phoenix.new
 # should output:
-mix phoenix.new         # Create a new Phoenix v1.0.3 application
+mix phoenix.new       # Create a new Phoenix v1.1.0 application
 ~~~
 
 ### PostgreSQL
@@ -148,11 +154,11 @@ Verify it worked:
 ~~~bash
 node --version
 # should output:
-v0.12.4
+v5.3.0
 
 npm --version
 # should output:
-2.10.1
+3.3.12
 ~~~
 
 ### Watchman
@@ -174,7 +180,7 @@ Verify it worked:
 ~~~bash
 watchman --version
 # should output:
-3.1.0
+4.1.0
 ~~~
 
 ### Ember CLI/Ember.js
@@ -197,13 +203,14 @@ Verify all this worked:
 ~~~bash
 ember --version
 # should output:
-version: 0.2.7
-node: 0.12.4
-npm: 2.11.0
+version: 1.13.13
+node: 5.3.0
+npm: 2.14.10
+os: darwin x64
 
 bower --version
 # should output:
-1.4.1
+1.7.1
 ~~~
 
 You probably also will want to install the [Ember inspector](https://github.com/emberjs/ember-inspector) for your browser as it is extremely helpful for debugging.
@@ -277,16 +284,28 @@ Edit `web/router.ex` and replace the contents with:
 ~~~elixir
 defmodule PeepBlogBackend.Router do
   use PeepBlogBackend.Web, :router
+  alias PeepBlogBackend.PostController
+
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    resources "/posts", PostController, except: [:new, :edit]
   end
 
   scope "/", PeepBlogBackend do
-    pipe_through :api
+    pipe_through :browser # Use the default browser stack
 
-    resources "/posts", PostController
+    get "/", PageController, :index
   end
+
 end
 ~~~
 
@@ -321,7 +340,7 @@ curl -H "Content-Type: application/json" http://localhost:4000/posts
 
 curl -X POST -H "Content-Type: application/json" -d '{ "post": { "title": "Test title", "body": "Lorem ipsum" } }' http://localhost:4000/posts
 # should output:
-{"data":{"id":1}}
+{"data":{"title":"Test title","id":1,"body":"Lorem ipsum"}}
 
 curl -H "Content-Type: application/json" http://localhost:4000/posts/1
 # should output:
