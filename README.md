@@ -1,10 +1,10 @@
 # maxwellholder.com (OLD)
 
-*This repo is no longer deployed at <maxwellholder.com> and is kept here only
-for reference.*
+**This repo is no longer deployed at <http://maxwellholder.com> and is kept here
+only for reference.**
 
-*The current site deployed at <maxwellholder.com> is available at
-[mxhold/mxhold.github.io](https://github.com/mxhold/mxhold.github.io).*
+**The current site deployed at <http://maxwellholder.com> is available at
+[mxhold/mxhold.github.io](https://github.com/mxhold/mxhold.github.io).**
 
 Run `bin/server` to serve site locally for preview. It will live-reload any
 changes made in `source/`.
